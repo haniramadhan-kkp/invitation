@@ -13,15 +13,16 @@ use Illuminate\Http\Request;
 
 class WishController extends Controller
 {
-    public function create(Request $request)
+    public function create($id, Request $request)
     {
+        $user = User::where('slug', $id)->get();
         $data = Wish::create([
             'name'      => ucwords($request->name),
-            'slug_id'   => $request->slug_id,
+            'slug_id'   => $user[0]->id,
             'email'     => $request->email,
             'phone'     => $request->phone,
             'message'   => $request->message,
-            'status'    => $request->status
+            'status'    => 1
         ]);
 
         $user = User::where('id', $data['slug_id'])->first();
